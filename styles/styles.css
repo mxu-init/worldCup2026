@@ -2,3 +2,31 @@ header {
     text-align: center; 
     margin-bottom: 40px; 
 }
+
+:root {
+  --wc-black: #0d0d0d;
+  --wc-yellow: #f5c400;
+  --wc-white: #E6E8E6;
+}
+
+body {
+  font-family: 'Oswald', sans-serif;
+  color: var(--wc-black);
+}
+
+.wc-navbar {
+  background-color: var(--wc-black);
+  padding: 0.9rem 0;
+}
+
+.wc-navbar .nav-link {
+  color: var(--wc-yellow);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  font-size: 0.9rem;
+}
+
+.wc-navbar .nav-link:hover {
+  color: var(--wc-white);
+}
