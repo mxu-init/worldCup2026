@@ -107,7 +107,7 @@ body {
 
 .ver-partidos {
     min-height: 55vh;
-    background-image: url("img/stadiumMatches.jpg");
+    background-image: url('../images/stadiumMatches.png');
 }
 
 /*Footer*/
