@@ -1,4 +1,71 @@
-header { 
-    text-align: center; 
-    margin-bottom: 40px; 
+:root {
+    --wc-black: #0d0d0d;
+    --wc-yellow: #f5c400;
+    --wc-white: #e6e8e6;
+}
+
+body {
+    font-family: "Oswald", sans-serif;
+    color: var(--wc-black);
+}
+
+.ver-partidos {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+}
+
+.ver-partidos::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    /* equivale a top:0; right:0; bottom:0; left:0; */
+    background-color: rgba(0, 0, 0, 0.55);
+    z-index: 1;
+}
+
+.ver-partidos-content {
+    position: relative;
+    z-index: 2;
+}
+
+.btn-wc-yellow {
+    background-color: var(--wc-yellow);
+    color: var(--wc-black);
+    font-weight: 600;
+    text-transform: uppercase;
+    border: none;
+}
+
+.btn-wc-yellow:hover {
+    background-color: var(--wc-white);
+    color: var(--wc-black);
+}
+
+.contenidos-clave {
+    background-color: var(--wc-white);
+}
+
+.card-clave {
+    background-color: var(--wc-black);
+    color: var(--wc-white);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 140px;
+    border-radius: 4px;
+    transition: transform 0.15s ease;
+}
+
+.card-clave:hover {
+    transform: translateY(-4px);
+}
+
+.ver-partidos {
+    min-height: 55vh;
+    background-image: url("img/stadiumMatches.jpg");
 }
