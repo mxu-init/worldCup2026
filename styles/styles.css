@@ -212,3 +212,13 @@ body {
     border-radius: 2px;
     transform: rotate(20deg);
 }
+
+/* Responsive */
+@media (max-width: 767px) {
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+  .card-clave {
+    height: 100px;
+  }
+}
