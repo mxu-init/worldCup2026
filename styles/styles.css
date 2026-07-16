@@ -1,14 +1,33 @@
 :root {
     --wc-black: #0d0d0d;
     --wc-yellow: #f5c400;
-    --wc-white: #e6e8e6;
+    --wc-white: #E6E8E6;
 }
 
 body {
-    font-family: "Oswald", sans-serif;
+    font-family: 'Oswald', sans-serif;
     color: var(--wc-black);
 }
 
+.wc-navbar {
+    background-color: var(--wc-black);
+    padding: 0.9rem 0;
+}
+
+.wc-navbar .nav-link {
+    color: var(--wc-yellow);
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    font-size: 0.9rem;
+}
+
+.wc-navbar .nav-link:hover {
+    color: var(--wc-white);
+
+}
+
+/*Main*/
 .ver-partidos {
     position: relative;
     background-size: cover;
@@ -20,7 +39,6 @@ body {
     content: "";
     position: absolute;
     inset: 0;
-    /* equivale a top:0; right:0; bottom:0; left:0; */
     background-color: rgba(0, 0, 0, 0.55);
     z-index: 1;
 }
@@ -68,4 +86,107 @@ body {
 .ver-partidos {
     min-height: 55vh;
     background-image: url("img/stadiumMatches.jpg");
+}
+
+/*Footer*/
+.wc-footer {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(to bottom, var(--wc-black), #000000);
+    border-top: 3px solid var(--wc-yellow);
+    padding: 3rem 1rem 2rem;
+}
+
+.footer-team {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    color: var(--wc-yellow);
+    font-size: 1.8rem;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.4rem;
+}
+
+.footer-tagline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.footer-nav {
+    margin-bottom: 1.5rem;
+}
+
+.footer-nav a {
+    color: var(--wc-white);
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.03em;
+    margin: 0 0.4rem;
+}
+
+.footer-nav a:hover {
+    color: var(--wc-yellow);
+}
+
+.footer-nav span {
+    color: var(--wc-yellow);
+    margin: 0 0.3rem;
+}
+
+.footer-data {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.8rem;
+    margin-bottom: 0.6rem;
+}
+
+.footer-data a {
+    color: var(--wc-yellow);
+    text-decoration: underline;
+}
+
+.footer-data a:hover {
+    color: var(--wc-white);
+}
+
+.footer-credit {
+    color: rgba(255, 255, 255, 0.45);
+    font-size: 0.78rem;
+    letter-spacing: 0.03em;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    padding-top: 1rem;
+    margin-bottom: 0.4rem;
+}
+
+.footer-note {
+    color: rgba(255, 255, 255, 0.35);
+    font-size: 0.72rem;
+    font-style: italic;
+    margin-bottom: 0;
+}
+
+.spark {
+    position: absolute;
+    background-color: var(--wc-yellow);
+    opacity: 0.6;
+}
+
+.spark-1 {
+    top: 20px;
+    left: 12%;
+    width: 6px;
+    height: 6px;
+    clip-path: polygon(50% 0%, 61% 35%, 100% 50%, 61% 65%, 50% 100%, 39% 65%, 0% 50%, 39% 35%);
+}
+
+.spark-2 {
+    bottom: 30px;
+    right: 15%;
+    width: 10px;
+    height: 16px;
+    border-radius: 2px;
+    transform: rotate(20deg);
 }
