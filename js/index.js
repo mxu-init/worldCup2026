@@ -23,9 +23,15 @@ async function getMundialGroups() {
                 if (tbody) {
                     tbody.innerHTML = '';
                     stage.table.forEach(pos => {
+                        console.log(pos.team);
                         const row = document.createElement('tr');
                         row.innerHTML = `
-                        <td>${pos.team.name}</td>
+                        <td>
+                            <span class="team-name" title="${pos.team.name}">
+                                <img src="${pos.team.crest}" alt="${pos.team.name}" class="flag">
+                                <span class="team-label">${pos.team.name}</span>
+                            </span>
+                        </td>
                         <td>${pos.playedGames}</td>
                         <td>${pos.won}</td>
                         <td>${pos.draw}</td>
