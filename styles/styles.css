@@ -81,6 +81,22 @@ body {
     color: var(--wc-black);
 }
 
+
+
+.header {
+    background-color: #000;
+    color: #E6E8E6;
+    padding: 2rem 2rem 2rem 3rem;
+    text-align: left;
+}
+
+.header-title {
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 0;
+}
+
 /*Main Styles*/
 
 .contenidos-clave {
