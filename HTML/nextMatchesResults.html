@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,18 +8,21 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="../styles/nextMatchesResults.css">
 
     <title>World Cup 2026</title>
+    
 </head>
 
 <body>
 
     <header class="header">
-    <h1 class="header-title">PRÓXIMOS PARTIDOS</h1>
-</header>
-        
+        <h1 class="header-title">PRÓXIMOS PARTIDOS</h1>
 
-    
+    </header>
+
+
+
 
     <nav class="navbar navbar-expand-lg navbar-dark wc-navbar sticky-top">
         <div class="container-fluid justify-content-center">
@@ -32,17 +36,23 @@
         </div>
     </nav>
 
-    <main>
+    <main class="pagina">
 
+        <div id="mensaje">
+            Preparando los partidos...
+        </div>
 
+        <section id="partidos" aria-live="polite"></section>
     </main>
 
-    
+
 
     <div id="footerInjection"></div>
+    <script src="nextMatchesResults.js"></script>
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/footerInjection.js"></script>
 </body>
+
 </html>
