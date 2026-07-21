@@ -28,6 +28,10 @@ body {
 
 }
 
+.navHighlight {
+    color: var(--wc-white);
+}
+
 /* Header styles */
 
 .hero,
