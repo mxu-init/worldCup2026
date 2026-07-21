@@ -2,13 +2,10 @@ async function getMundialGroups() {
     try {
         console.log("Conectando con la API...");
         const response = await fetch('/api/football-proxy?path=competitions/WC/standings');
-            headers: { 'X-Auth-Token': API_KEY }
-        });
 
         if (!response.ok) {
             throw new Error(`Error ${response.status}: ${response.statusText}`);
         }
-
         const data = await response.json();
 
         if (data.standings && data.standings.length > 0) {
