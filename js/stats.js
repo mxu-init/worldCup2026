@@ -3,12 +3,6 @@ const COMPETICION = "WC";
 const NUM_FILAS = 10; 
 
 
-const ESTAMOS_EN_LOCAL =
-  window.location.hostname === "localhost" ||
-  window.location.hostname === "127.0.0.1";
-
-const API_URL_BASE = "https://api.football-data.org/v4/";
-const API_KEY = "4ae71e0fd15c4aa88600049cc862830a"; // solo se usa en local, ver obtenerDatosAPI
 
 // Datos de respaldo por si la API falla o no hay conexión
 const DATOS_EJEMPLO = {
