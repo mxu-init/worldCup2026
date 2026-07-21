@@ -7,6 +7,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="../styles/stats.css">
+
 
     <title>World Cup 2026</title>
 </head>
@@ -32,10 +34,77 @@
         </div>
     </nav>
 
-    <main>
+    
+      <main class="container my-4">
 
+        
+    <div id="mensaje-estado" class="alert alert-warning d-none" role="alert"></div>
 
-    </main>
+    
+    <section class="mb-5">
+      <h3 class="subtitle"> Máximos Goleadores</h3>
+      <div class="table-responsive">
+        <table class="table stats-table mb-0">
+          <thead>
+            <tr>
+              <th>Puesto</th>
+              <th>Jugador</th>
+              <th>Selección</th>
+              <th>Goles</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-goleadores">
+            
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    
+    <section class="mb-5">
+      <h3 class="subtitle"> Equipos Más Goleadores</h3>
+      <div class="table-responsive">
+        <table class="table stats-table mb-0">
+          <thead>
+            <tr>
+              <th>Puesto</th>
+              <th>Equipo</th>
+              <th>Goles a favor</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-equipos-goleadores">
+            
+          </tbody>
+        </table>
+        <p class="small fst-italic mt-2" style="color: #6c6c6c;">
+  * Datos calculados sumando goles de todos los partidos finalizados
+  (grupos + eliminatorias), no solo la clasificación de grupos.
+</p>
+      </div>
+    </section>
+
+    
+    <section class="mb-5">
+      <h3 class="subtitle"> Equipos con Más Goles Encajados</h3>
+      <div class="table-responsive">
+        <table class="table stats-table mb-0">
+          <thead>
+            <tr>
+              <th>Puesto</th>
+              <th>Equipo</th>
+              <th>Goles en contra</th>
+            </tr>
+          </thead>
+          <tbody id="tabla-equipos-encajados">
+            
+          </tbody>
+        </table>
+        
+      </div>
+    </section>
+
+  </main>
+  
     
 
     <div id="footerInjection"></div>
@@ -43,5 +112,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../js/footerInjection.js"></script>
+    <script src="../js/stats.js"></script>
 </body>
 </html>
