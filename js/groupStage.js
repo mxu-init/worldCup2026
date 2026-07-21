@@ -1,9 +1,7 @@
-const API_KEY = '9abd8c776a3f4d5eb73acf0f550aa783'; 
-
 async function getMundialGroups() {
     try {
         console.log("Conectando con la API...");
-        const response = await fetch('https://corsproxy.io/?url=https://api.football-data.org/v4/competitions/WC/standings', {
+        const response = await fetch('/api/football-proxy?path=competitions/WC/standings');
             headers: { 'X-Auth-Token': API_KEY }
         });
 
