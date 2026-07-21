@@ -1,11 +1,29 @@
-const API_KEY = '9abd8c776a3f4d5eb73acf0f550aa783'; 
+const ESTAMOS_EN_LOCAL =
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1";
+
+const API_KEY = '9abd8c776a3f4d5eb73acf0f550aa783'; // solo se usa en local, ver getMundialGroups
 
 async function getMundialGroups() {
     try {
         console.log("Conectando con la API...");
-        const response = await fetch('https://corsproxy.io/?url=https://api.football-data.org/v4/competitions/WC/standings', {
-            headers: { 'X-Auth-Token': API_KEY }
-        });
+
+        const path = "competitions/WC/standings";
+
+        let requestURL;
+        let opciones = {};
+
+        if (ESTAMOS_EN_LOCAL) {
+            // En local seguimos usando el proxy público
+            const apiURL = "https://api.football-data.org/v4/" + path;
+            requestURL = "https://corsproxy.io/?url=" + encodeURIComponent(apiURL);
+            opciones.headers = { 'X-Auth-Token': API_KEY };
+        } else {
+            // En Vercel, llamamos a nuestro propio backend (api/football-proxy.js), sin problemas de CORS
+            requestURL = `/api/football-proxy?path=${encodeURIComponent(path)}`;
+        }
+
+        const response = await fetch(requestURL, opciones);
 
         if (!response.ok) {
             throw new Error(`Error ${response.status}: ${response.statusText}`);
