@@ -1,7 +1,7 @@
 // URL real de la API de football-data.org
 const apiURL = "https://api.football-data.org/v4/competitions/WC/matches";
 
-// Proxy público que evita el bloqueo de CORS (solo para practicar, no usar en producción)
+// Proxy público que evita el bloqueo de CORS
 const requestURL = "https://corsproxy.io/?url=" + encodeURIComponent(apiURL);
 const API_KEY = "4ae71e0fd15c4aa88600049cc862830a";
 
