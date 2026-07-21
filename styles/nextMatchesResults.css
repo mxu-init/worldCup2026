@@ -2,23 +2,12 @@
         box-sizing: border-box;
     }
 
-    body {
-        margin: 0;
-        padding: 30px 15px;
-        font-family: Arial, Helvetica, sans-serif;
-        background-color: #f1f3f4;
-        color: #161616;
-    }
 
     .pagina {
         width: min(100%, 1000px);
         margin: 0 auto;
     }
 
-    h1 {
-        margin-bottom: 8px;
-        text-align: center;
-    }
 
     .introduccion {
         margin-top: 0;

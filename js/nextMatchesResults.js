@@ -6,13 +6,8 @@ const API_KEY = "7ae1f82c23a24e4e9638397fe6b29b8c";
   WC = FIFA World Cup
   season=2026 = edición del Mundial de 2026
 */
-const apiURL =
+const requestURL =
     "https://api.football-data.org/v4/competitions/WC/matches?season=2026";
-
-/*
-  Proxy público que evita el bloqueo de CORS.
-*/
-const requestURL = "https://corsproxy.io/?url=" + encodeURIComponent(apiURL);
 
 /*
   Referencias a los elementos del HTML.
