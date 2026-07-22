@@ -1,0 +1,17 @@
+.footballMatches {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.match-card-custom {
+    width: 18rem;
+    margin: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.match-card-custom .card-footer {
+    font-size: 0.85rem;
+}
