@@ -7,6 +7,7 @@
 body {
     font-family: 'Oswald', sans-serif;
     color: var(--wc-black);
+    background-color: var(--wc-white) !important;
 }
 
 .wc-navbar {
@@ -25,6 +26,10 @@ body {
 .wc-navbar .nav-link:hover {
     color: var(--wc-white);
 
+}
+
+.navHighlight {
+    color: var(--wc-white);
 }
 
 /* Header styles */
