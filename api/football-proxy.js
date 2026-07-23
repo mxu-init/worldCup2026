@@ -19,4 +19,3 @@ export default async function handler(req, res) {
     res.status(500).json({ error: "Error al contactar con football-data.org" });
   }
 }
-
