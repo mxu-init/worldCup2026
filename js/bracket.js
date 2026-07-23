@@ -47,6 +47,7 @@ function agruparPorRonda(partidos) {
     const grupos = {};
 
     RONDAS.forEach(ronda => grupos[ronda.key] = []);
+    grupos["THIRD_PLACE"] = []; // partido por el tercer puesto, aparte del árbol principal
 
     partidos.forEach(partido => {
         if (grupos[partido.stage]) {
@@ -98,12 +99,29 @@ function createRoundHTML(ronda, partidos) {
     `;
 }
 
+function createThirdPlaceHTML(partido) {
+    return `
+        <div class="bracket-third-place">
+            <h3 class="bracket-round-title">Tercer y cuarto puesto</h3>
+            ${createMatchHTML(partido)}
+        </div>
+    `;
+}
+
 function displayBracket(grupos) {
     const footballSection = document.getElementById('footballSection');
 
-    const roundsHTML = RONDAS
+    // Solo mostramos las rondas que realmente tienen partidos.
+    // Si una ronda esperada aparece vacía, revisa el console.log de "Etapas recibidas"
+    const rondasConPartidos = RONDAS.filter(ronda => grupos[ronda.key].length > 0);
+
+    const roundsHTML = rondasConPartidos
         .map(ronda => createRoundHTML(ronda, grupos[ronda.key]))
         .join('');
+
+    const tercerPuestoHTML = grupos.THIRD_PLACE.length > 0
+        ? createThirdPlaceHTML(grupos.THIRD_PLACE[0])
+        : '';
 
     footballSection.innerHTML = `
         <div class="bracket-wrapper">
@@ -111,6 +129,7 @@ function displayBracket(grupos) {
                 ${roundsHTML}
                 <svg id="bracketLines" class="bracket-lines"></svg>
             </div>
+            ${tercerPuestoHTML}
         </div>
     `;
 
@@ -124,8 +143,8 @@ function displayBracket(grupos) {
     });
 }
 
-// Calcula cuánto espacio vertical necesita el bracket entero,
-// según la altura real de un partido y cuántos hay en la primera ronda
+// Suma la altura REAL de cada partido de la primera ronda (por si algún
+// nombre ocupa dos líneas) para que el bracket tenga sitio de sobra
 function ajustarAlturaBracket() {
     const bracket = document.getElementById('bracket');
     const primeraRonda = bracket.querySelector('.bracket-round-matches');
@@ -135,8 +154,12 @@ function ajustarAlturaBracket() {
     const partidos = primeraRonda.querySelectorAll('.bracket-match');
     if (partidos.length === 0) return;
 
-    const alturaPartido = partidos[0].getBoundingClientRect().height;
-    bracket.style.minHeight = `${partidos.length * alturaPartido * 1.8}px`;
+    let alturaTotal = 0;
+    partidos.forEach(partido => {
+        alturaTotal += partido.getBoundingClientRect().height + 16;
+    });
+
+    bracket.style.minHeight = `${alturaTotal}px`;
 }
 
 // Dibuja las líneas que conectan cada partido con el siguiente,
@@ -150,9 +173,6 @@ function dibujarConectores() {
     svg.innerHTML = '';
 
     const bracketRect = bracket.getBoundingClientRect();
-    svg.setAttribute('width', bracketRect.width);
-    svg.setAttribute('height', bracketRect.height);
-
     const rounds = [...bracket.querySelectorAll('.bracket-round-matches')];
 
     for (let r = 0; r < rounds.length - 1; r++) {
@@ -176,7 +196,6 @@ function dibujarConectores() {
             linea.setAttribute('d', `M ${x1} ${y1} H ${xMedio} V ${y2} H ${x2}`);
             linea.classList.add('bracket-connector');
 
-            // Guardamos qué equipos pasan por esta línea, para poder iluminarla al hacer hover
             const equipos = [...partido.querySelectorAll('.bracket-team')].map(e => e.dataset.team);
             linea.dataset.equipos = equipos.join('|');
 
@@ -185,8 +204,6 @@ function dibujarConectores() {
     }
 }
 
-// Al pasar el ratón sobre un equipo, buscamos todas las líneas
-// donde aparece ese equipo y las marcamos como activas
 function activarHover() {
     document.querySelectorAll('.bracket-team').forEach(equipoEl => {
         equipoEl.addEventListener('mouseenter', () => {
@@ -216,6 +233,12 @@ async function iniciarBracket() {
     const footballData = await fetchFootballJson();
 
     if (footballData && footballData.matches) {
+        // DIAGNÓSTICO: compara esto con las claves de RONDAS más arriba.
+        // Si ves un nombre distinto (ej. "ROUND_OF_16" en vez de "LAST_16"),
+        // cambia esa clave en el array RONDAS.
+        const etapasEncontradas = [...new Set(footballData.matches.map(p => p.stage))];
+        console.log('Etapas recibidas de la API:', etapasEncontradas);
+
         const grupos = agruparPorRonda(footballData.matches);
         displayBracket(grupos);
     } else {
