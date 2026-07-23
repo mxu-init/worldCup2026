@@ -22,8 +22,7 @@
 </p>
 </div>
 
-<img width="2000" height="1600" alt="World Cup 2026 FullStack FC Collage" src="https://github.com/user-attachments/assets/44399bec-bf17-4066-9cd6-0694248f4b0c" />
-
+<img width="2000" height="1600" alt="World Cup 2026 FullStack FC Collage (1)" src="https://github.com/user-attachments/assets/ca84c490-e803-4e81-9504-2aee9737ad4a" />
 
 ---
 
