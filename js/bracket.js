@@ -4,13 +4,15 @@ const ESTAMOS_EN_LOCAL =
 
 const API_KEY = "4ae71e0fd15c4aa88600049cc862830a"; // solo se usa en local, ver fetchFootballJson
 
-// Orden de las rondas eliminatorias, tal y como las nombra la API
+// Orden de las rondas eliminatorias, tal y como las nombra la API.
+// tituloPorPartido: true -> el título sale encima de cada enfrentamiento
+// en vez de una sola vez arriba de toda la columna (para rondas con pocos partidos)
 const RONDAS = [
     { key: "LAST_32", nombre: "Dieciseisavos" },
     { key: "LAST_16", nombre: "Octavos" },
     { key: "QUARTER_FINALS", nombre: "Cuartos" },
-    { key: "SEMI_FINALS", nombre: "Semifinal" },
-    { key: "FINAL", nombre: "Final" },
+    { key: "SEMI_FINALS", nombre: "Semifinal", tituloPorPartido: true },
+    { key: "FINAL", nombre: "Final", tituloPorPartido: true },
 ];
 
 async function fetchFootballJson () {
@@ -41,13 +43,13 @@ async function fetchFootballJson () {
     }
 }
 
-// Agrupa los partidos por ronda. Dentro de cada ronda los ordena por id,
-// asumiendo que la API los devuelve en orden de enfrentamiento
+// Agrupa los partidos por ronda. El orden inicial (por id) solo importa
+// de verdad para la primera ronda; el resto se reordena después
 function agruparPorRonda(partidos) {
     const grupos = {};
 
     RONDAS.forEach(ronda => grupos[ronda.key] = []);
-    grupos["THIRD_PLACE"] = []; // partido por el tercer puesto, aparte del árbol principal
+    grupos["THIRD_PLACE"] = [];
 
     partidos.forEach(partido => {
         if (grupos[partido.stage]) {
@@ -58,6 +60,45 @@ function agruparPorRonda(partidos) {
     Object.keys(grupos).forEach(key => {
         grupos[key].sort((a, b) => a.id - b.id);
     });
+
+    return grupos;
+}
+
+// Reordena cada ronda para que el orden visual (de arriba a abajo)
+// coincida con el orden real de sus enfrentamientos anteriores.
+// Esto es solo estético: evita que las líneas se crucen de forma rara.
+// La conexión REAL (quién enlaza con quién) la decide dibujarConectores,
+// comparando nombres de equipo, no posiciones.
+function ordenarPorEmparejamiento(grupos) {
+    const rondasConDatos = RONDAS.filter(ronda => grupos[ronda.key].length > 0);
+
+    for (let i = 1; i < rondasConDatos.length; i++) {
+        const rondaAnterior = grupos[rondasConDatos[i - 1].key];
+        const claveActual = rondasConDatos[i].key;
+        const rondaActual = grupos[claveActual];
+
+        const ordenados = [];
+
+        rondaAnterior.forEach(partidoAnterior => {
+            const equipos = [partidoAnterior.homeTeam?.name, partidoAnterior.awayTeam?.name]
+                .filter(Boolean);
+
+            const siguiente = rondaActual.find(p =>
+                !ordenados.includes(p) &&
+                equipos.some(nombre => p.homeTeam?.name === nombre || p.awayTeam?.name === nombre)
+            );
+
+            if (siguiente) ordenados.push(siguiente);
+        });
+
+        // Cualquier partido que no hayamos podido emparejar (equipos aún
+        // no definidos) se añade al final, sin descartarlo
+        rondaActual.forEach(p => {
+            if (!ordenados.includes(p)) ordenados.push(p);
+        });
+
+        grupos[claveActual] = ordenados;
+    }
 
     return grupos;
 }
@@ -86,7 +127,25 @@ function createMatchHTML(partido) {
     `;
 }
 
-function createRoundHTML(ronda, partidos) {
+function createRoundHTML(ronda, partidos, extraHTML = '') {
+    if (ronda.tituloPorPartido) {
+        const matches = partidos.map(partido => `
+            <div class="bracket-match-block">
+                <h4 class="bracket-match-title">${ronda.nombre}</h4>
+                ${createMatchHTML(partido)}
+            </div>
+        `).join('');
+
+        return `
+            <div class="bracket-round" data-round="${ronda.key}">
+                <div class="bracket-round-matches">
+                    ${matches}
+                </div>
+                ${extraHTML}
+            </div>
+        `;
+    }
+
     const matches = partidos.map(createMatchHTML).join('');
 
     return `
@@ -95,6 +154,7 @@ function createRoundHTML(ronda, partidos) {
             <div class="bracket-round-matches">
                 ${matches}
             </div>
+            ${extraHTML}
         </div>
     `;
 }
@@ -102,7 +162,7 @@ function createRoundHTML(ronda, partidos) {
 function createThirdPlaceHTML(partido) {
     return `
         <div class="bracket-third-place">
-            <h3 class="bracket-round-title">Tercer y cuarto puesto</h3>
+            <h4 class="bracket-match-title">Tercer y cuarto puesto</h4>
             ${createMatchHTML(partido)}
         </div>
     `;
@@ -111,17 +171,16 @@ function createThirdPlaceHTML(partido) {
 function displayBracket(grupos) {
     const footballSection = document.getElementById('footballSection');
 
-    // Solo mostramos las rondas que realmente tienen partidos.
-    // Si una ronda esperada aparece vacía, revisa el console.log de "Etapas recibidas"
     const rondasConPartidos = RONDAS.filter(ronda => grupos[ronda.key].length > 0);
 
-    const roundsHTML = rondasConPartidos
-        .map(ronda => createRoundHTML(ronda, grupos[ronda.key]))
-        .join('');
+    const roundsHTML = rondasConPartidos.map(ronda => {
+        const esColumnaFinal = ronda.key === "FINAL";
+        const extra = (esColumnaFinal && grupos.THIRD_PLACE.length > 0)
+            ? createThirdPlaceHTML(grupos.THIRD_PLACE[0])
+            : '';
 
-    const tercerPuestoHTML = grupos.THIRD_PLACE.length > 0
-        ? createThirdPlaceHTML(grupos.THIRD_PLACE[0])
-        : '';
+        return createRoundHTML(ronda, grupos[ronda.key], extra);
+    }).join('');
 
     footballSection.innerHTML = `
         <div class="bracket-wrapper">
@@ -129,7 +188,6 @@ function displayBracket(grupos) {
                 ${roundsHTML}
                 <svg id="bracketLines" class="bracket-lines"></svg>
             </div>
-            ${tercerPuestoHTML}
         </div>
     `;
 
@@ -143,8 +201,6 @@ function displayBracket(grupos) {
     });
 }
 
-// Suma la altura REAL de cada partido de la primera ronda (por si algún
-// nombre ocupa dos líneas) para que el bracket tenga sitio de sobra
 function ajustarAlturaBracket() {
     const bracket = document.getElementById('bracket');
     const primeraRonda = bracket.querySelector('.bracket-round-matches');
@@ -162,8 +218,9 @@ function ajustarAlturaBracket() {
     bracket.style.minHeight = `${alturaTotal}px`;
 }
 
-// Dibuja las líneas que conectan cada partido con el siguiente,
-// midiendo la posición real de cada tarjeta en pantalla
+// Dibuja las líneas conectando cada partido con el partido REAL de la
+// siguiente ronda en el que aparece alguno de sus dos equipos.
+// Ya no se asume ninguna posición ni orden: se comprueba el dato en sí.
 function dibujarConectores() {
     const svg = document.getElementById('bracketLines');
     const bracket = document.getElementById('bracket');
@@ -179,8 +236,19 @@ function dibujarConectores() {
         const partidosActuales = [...rounds[r].querySelectorAll('.bracket-match')];
         const partidosSiguientes = [...rounds[r + 1].querySelectorAll('.bracket-match')];
 
-        partidosActuales.forEach((partido, indice) => {
-            const partidoSiguiente = partidosSiguientes[Math.floor(indice / 2)];
+        partidosActuales.forEach(partido => {
+            const equiposOrigen = [...partido.querySelectorAll('.bracket-team')]
+                .map(e => e.dataset.team)
+                .filter(nombre => nombre && nombre !== "Por definir");
+
+            // Buscamos en qué partido de la siguiente ronda aparece de
+            // verdad alguno de estos dos equipos: ese es el destino real
+            const partidoSiguiente = partidosSiguientes.find(candidato => {
+                const equiposDestino = [...candidato.querySelectorAll('.bracket-team')]
+                    .map(e => e.dataset.team);
+                return equiposOrigen.some(nombre => equiposDestino.includes(nombre));
+            });
+
             if (!partidoSiguiente) return;
 
             const origenRect = partido.getBoundingClientRect();
@@ -233,13 +301,10 @@ async function iniciarBracket() {
     const footballData = await fetchFootballJson();
 
     if (footballData && footballData.matches) {
-        // DIAGNÓSTICO: compara esto con las claves de RONDAS más arriba.
-        // Si ves un nombre distinto (ej. "ROUND_OF_16" en vez de "LAST_16"),
-        // cambia esa clave en el array RONDAS.
         const etapasEncontradas = [...new Set(footballData.matches.map(p => p.stage))];
         console.log('Etapas recibidas de la API:', etapasEncontradas);
 
-        const grupos = agruparPorRonda(footballData.matches);
+        const grupos = ordenarPorEmparejamiento(agruparPorRonda(footballData.matches));
         displayBracket(grupos);
     } else {
         console.error('No se han encontrado datos de los partidos');

@@ -1,20 +1,7 @@
-/* .footballMatches {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: row;
-    justify-content: space-around;
-    margin-top: 20px;
+.footballMatches {
+    margin-left: 7%;
+    
 }
-
-.match-card-custom {
-    width: 18rem;
-    margin: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.match-card-custom .card-footer {
-    font-size: 0.85rem;
-} */
 
 .bracket-wrapper {
     position: relative;
@@ -25,7 +12,7 @@
 .bracket {
     display: flex;
     gap: 60px;
-    position: relative; /* IMPRESCINDIBLE: sin esto, el SVG de las líneas se coloca mal */
+    position: relative; /* imprescindible para que el SVG de las líneas se coloque bien */
 }
 
 .bracket-round {
@@ -56,6 +43,23 @@
     margin: 6px 0;
 }
 
+.bracket-match-block {
+    margin: 6px 0;
+}
+
+.bracket-match-block .bracket-match {
+    margin: 0;
+}
+
+.bracket-match-title {
+    text-align: center;
+    color: var(--wc-black);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    margin: 0 0 6px;
+}
+
 .bracket-team {
     display: flex;
     justify-content: space-between;
@@ -77,13 +81,9 @@
 }
 
 .bracket-third-place {
-    margin: 40px 0 0;
-    max-width: 220px;
+    margin-top: 40px;
 }
 
-/* Las líneas viven en un SVG que se superpone al bracket.
-   width/height al 100% en vez de fijarlo por JS, para que siempre
-   coincida exactamente con el tamaño real de #bracket */
 .bracket-lines {
     position: absolute;
     top: 0;
