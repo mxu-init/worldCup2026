@@ -1,13 +1,16 @@
 "use strict";
 
-const API_KEY = "7ae1f82c23a24e4e9638397fe6b29b8c";
+const ESTAMOS_EN_LOCAL =
+  window.location.hostname === "localhost" ||
+  window.location.hostname === "127.0.0.1";
+
+const API_KEY = "7ae1f82c23a24e4e9638397fe6b29b8c"; // solo se usa en local, ver obtenerPartidos
 
 /*
   WC = FIFA World Cup
   season=2026 = edición del Mundial de 2026
 */
-const requestURL =
-    "https://api.football-data.org/v4/competitions/WC/matches?season=2026";
+const path = "competitions/WC/matches?season=2026";
 
 /*
   Referencias a los elementos del HTML.
@@ -23,13 +26,20 @@ async function obtenerPartidos() {
     mostrarMensaje("Cargando todos los partidos del Mundial de Futbol 2026...");
 
     try {
-        const respuesta = await fetch(requestURL, {
-            method: "GET",
+        let requestURL;
+        let opciones = { method: "GET" };
 
-            headers: {
-                "X-Auth-Token": API_KEY,
-            },
-        });
+        if (ESTAMOS_EN_LOCAL) {
+            // En local seguimos usando el proxy público, porque Live Server no ejecuta la carpeta /api
+            const apiURL = "https://api.football-data.org/v4/" + path;
+            requestURL = "https://corsproxy.io/?url=" + encodeURIComponent(apiURL);
+            opciones.headers = { "X-Auth-Token": API_KEY };
+        } else {
+            // En Vercel, llamamos a nuestro propio backend (api/football-proxy.js), sin problemas de CORS
+            requestURL = `/api/football-proxy?path=${encodeURIComponent(path)}`;
+        }
+
+        const respuesta = await fetch(requestURL, opciones);
 
         /*
               fetch no genera automáticamente un error con respuestas
