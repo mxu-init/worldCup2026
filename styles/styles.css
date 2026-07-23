@@ -4,6 +4,11 @@
     --wc-white: #E6E8E6;
 }
 
+a {
+    color: var(--wc-white);
+    text-decoration: none;
+}
+
 body {
     font-family: 'Oswald', sans-serif;
     color: var(--wc-black);
