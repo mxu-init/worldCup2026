@@ -1,4 +1,4 @@
-.footballMatches {
+/* .footballMatches {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
@@ -14,4 +14,84 @@
 
 .match-card-custom .card-footer {
     font-size: 0.85rem;
+} */
+
+.bracket-wrapper {
+    position: relative;
+    overflow-x: auto;
+    padding: 8px 0;
+}
+
+.bracket {
+    display: flex;
+    gap: 60px;
+    position: relative;
+}
+
+.bracket-round {
+    display: flex;
+    flex-direction: column;
+    min-width: 220px;
+}
+
+.bracket-round-title {
+    text-align: center;
+    color: var(--wc-black);
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.bracket-round-matches {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.bracket-match {
+    border: 2px solid var(--wc-black);
+    border-radius: 6px;
+    margin: 6px 0;
+}
+
+.bracket-team {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 10px;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+}
+
+.bracket-team:first-child {
+    border-bottom: 1px solid var(--wc-black);
+}
+
+.bracket-team-score {
+    font-weight: bold;
+}
+
+.bracket-team-active {
+    background-color: var(--wc-yellow);
+}
+
+/* Las líneas viven en un SVG que se superpone al bracket */
+.bracket-lines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none; /* para que no bloquee el hover sobre las tarjetas */
+}
+
+.bracket-connector {
+    fill: none;
+    stroke: var(--wc-black);
+    stroke-width: 2;
+    transition: stroke 0.2s ease, stroke-width 0.2s ease;
+}
+
+.bracket-connector-active {
+    stroke: var(--wc-yellow);
+    stroke-width: 3;
 }
