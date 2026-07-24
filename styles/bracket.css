@@ -1,6 +1,5 @@
 .footballMatches {
-    margin-left: 7%;
-    
+    margin-left: 10%;
 }
 
 .bracket-wrapper {
@@ -11,23 +10,25 @@
 
 .bracket {
     display: flex;
-    gap: 60px;
+    align-items: stretch;
+    gap: 18px;
     position: relative; /* imprescindible para que el SVG de las líneas se coloque bien */
 }
 
 .bracket-round {
     display: flex;
     flex-direction: column;
-    min-width: 220px;
+    width: 130px;
+    flex-shrink: 0;
 }
 
 .bracket-round-title {
     text-align: center;
     color: var(--wc-black);
     text-transform: uppercase;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
-    margin-bottom: 12px;
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
 }
 
 .bracket-round-matches {
@@ -38,13 +39,17 @@
 }
 
 .bracket-match {
+    width: 130px;
     border: 2px solid var(--wc-black);
-    border-radius: 6px;
-    margin: 6px 0;
+    border-radius: 8px;
+    margin: 5px 0;
+    background: #ffffff; /* blanco puro, para que resalte sobre el fondo de la página */
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
 }
 
 .bracket-match-block {
-    margin: 6px 0;
+    margin: 5px 0;
 }
 
 .bracket-match-block .bracket-match {
@@ -55,21 +60,37 @@
     text-align: center;
     color: var(--wc-black);
     text-transform: uppercase;
-    font-size: 0.8rem;
-    letter-spacing: 1px;
-    margin: 0 0 6px;
+    font-size: 0.68rem;
+    letter-spacing: 0.5px;
+    margin: 0 0 5px;
 }
 
 .bracket-team {
     display: flex;
-    justify-content: space-between;
-    padding: 6px 10px;
-    font-size: 0.9rem;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 8px;
+    font-size: 0.8rem;
     transition: background-color 0.2s ease;
 }
 
 .bracket-team:first-child {
     border-bottom: 1px solid var(--wc-black);
+}
+
+.bracket-flag,
+.bracket-flag-vacia {
+    width: 18px;
+    height: 13px;
+    object-fit: cover;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.bracket-team-code {
+    flex: 1;
+    font-weight: 500;
+    letter-spacing: 0.5px;
 }
 
 .bracket-team-score {
@@ -80,8 +101,29 @@
     background-color: var(--wc-yellow);
 }
 
-.bracket-third-place {
-    margin-top: 40px;
+/* Bloque central: Final arriba, las dos semifinales en fila,
+   y tercer/cuarto puesto debajo. Se centra en vertical respecto
+   a las columnas largas de dieciseisavos */
+.bracket-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    align-self: center;
+    flex-shrink: 0;
+    width: auto;
+}
+
+.bracket-semis-row {
+    display: flex;
+    gap: 12px;
+}
+
+.bracket-final-column {
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
 }
 
 .bracket-lines {
