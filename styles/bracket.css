@@ -1,3 +1,7 @@
+.container {
+    margin-left: 10%;
+}
+
 .bracket-wrapper {
     position: relative;
     overflow-x: auto;
